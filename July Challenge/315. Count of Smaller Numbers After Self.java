@@ -1,75 +1,76 @@
 class Solution {
-     int[] count;
+    
+     public class Pair {
+        int val;
+        int index;
+
+        public Pair(int val, int index) {
+            this.val = val;
+            this.index = index;
+        }
+    }
+    
+    private void merge(Pair[] arr, int left, int mid, int right, Integer[] resArr) {
+        Pair[] temp = new Pair[right - left + 1];
+        int i = left, j = mid + 1, k = 0;
+
+        while(i <= mid && j <= right) {
+            if(arr[i].val > arr[j].val) {
+                resArr[arr[i].index] += right - j + 1;
+                temp[k++] = arr[i++];
+            } 
+			
+			else 
+                temp[k++] = arr[j++];
+        }
+
+        while(i <= mid) 
+            temp[k++] = arr[i++];
+
+        while(j <= right) 
+            temp[k++] = arr[j++];
+        
+        for(i = left; i <= right; i++) 
+            arr[i] = temp[i - left];
+    }
+    
+    
+	
+	private void mergeSort(Pair[] arr, int left, int right, Integer[] resArr) {
+        if(left < right) {
+            int mid = (left + right) / 2;
+
+            mergeSort(arr, left, mid, resArr);
+            mergeSort(arr, mid + 1, right, resArr);
+
+            merge(arr, left, mid, right, resArr);
+        }
+    }
+    
     
     public List<Integer> countSmaller(int[] nums) {
         
-        List<Integer> result = new ArrayList<>();
-        count = new int[nums.length];
-        int[] originalIndex = new int[nums.length];
+       List<Integer> res = new ArrayList<>();
 
-        for(int i=0;i<nums.length;i++) originalIndex[i]=i;
+        if (nums == null || nums.length == 0) 
+            return res;
 
-        sort(nums,originalIndex,0,nums.length-1);
+        Pair[] arr = new Pair[nums.length];
 
-        for(int i=0;i<nums.length;i++){
-            result.add(count[i]);
-        }
-        return result;
+        for (int i = 0; i < nums.length; i++)
+            arr[i] = new Pair(nums[i], i);
 
+        Integer[] resArr = new Integer[nums.length];
+        Arrays.fill(resArr, 0);
+
+        mergeSort(arr, 0, nums.length - 1, resArr);
+
+        res.addAll(Arrays.asList(resArr));
+
+        return res; 
     
     
-    }
+
     
-    private void sort(int[] arr,int[] originalIndex,int l, int r){
-        if(l<r){
-            int mid=(l+r)/2;
-            sort(arr,originalIndex,l,mid);
-            sort(arr,originalIndex,mid+1,r);
-            merge(arr,originalIndex,l,mid,r);
-        }
-    }
-
-    private void merge(int[] arr, int[] originalIndex, int left, int mid, int right){
-        int lArrSize = mid-left+1;
-        int rArrSize = right-mid;
-        int[] lArr = new int[lArrSize];
-        int[] rArr = new int[rArrSize];
-
-        for(int i = 0; i <lArrSize; i++){
-            lArr[i]=originalIndex[left+i];
-        }
-        for(int j = 0; j < rArrSize; j++){
-            rArr[j]=originalIndex[j+mid+1];
-        }
-
-        int i=0,j=0,k=left;
-        int rightCount=0;
-        while(i< lArrSize && j < rArrSize){
-            if(arr[lArr[i]]<= arr[rArr[j]]){
-                originalIndex[k] = lArr[i];
-                count[lArr[i]] += rightCount;
-                i++;
-            }else{
-                originalIndex[k] = rArr[j];
-                j++;
-                rightCount++;
-            }
-            k++;
-        }
-
-        while(i < lArrSize){
-            originalIndex[k] = lArr[i];
-            count[lArr[i]] += rightCount;
-            i++;
-            k++;
-        }
-
-        while (j < rArrSize)
-        {
-            originalIndex[k] = rArr[j];
-            j++;
-            k++;
-        }
-
     }
 }
