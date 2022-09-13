@@ -2,7 +2,7 @@ class Solution {
     public int bagOfTokensScore(int[] tokens, int power) {
        
         Arrays.sort(tokens);
-        if(tokens.length==0 || tokens[0]>power) return 0;
+        if(tokens.length==0) return 0;
         
         int score=0;
         int maxScore =0;
@@ -16,17 +16,17 @@ class Solution {
 
             if(power>=tokens[left]){
                 score++;
-                power-=tokens[left];
-                left++;
-              
-                
+                power-=tokens[left++];
+           
             }
-           else if(power<tokens[left]){
+           else if(power<tokens[left] && score>=1){
                 score--;
-                power+=tokens[right];
-                right--;
+                power+=tokens[right--];
+                
 
             }
+            else break;
+            
             maxScore = Math.max(maxScore , score);
         }
 
