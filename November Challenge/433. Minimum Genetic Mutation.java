@@ -4,11 +4,9 @@ class Solution {
         Queue<String> queue = new LinkedList<>();
         queue.add(start);
         boolean [] vis = new boolean[bank.length];
-     
-
         int minMutation=0;
-        while(queue.size()!=0)
-        {
+
+        while(queue.size()!=0){
             int size = queue.size();
             
             for(int i=0;i<size ;i++){
@@ -43,6 +41,6 @@ class Solution {
             }
         }
 
-        return differences==1 ? true : false;
+        return differences==1;
     }
 }
