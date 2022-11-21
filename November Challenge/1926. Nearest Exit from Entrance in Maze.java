@@ -3,7 +3,7 @@ class Solution {
         int m=maze.length;
         int n = maze[0].length;
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{entrance[0] , entrance[1] , 0});
+        queue.add(new int[]{entrance[0] , entrance[1] });
         maze[entrance[0]][entrance[1]] = '+';
         int steps=0;
 
